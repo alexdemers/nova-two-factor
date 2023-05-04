@@ -3,7 +3,6 @@
 namespace Visanduma\NovaTwoFactor\Http\Controller;
 
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -12,7 +11,7 @@ use PragmaRX\Google2FA\Google2FA as G2fa;
 use Visanduma\NovaTwoFactor\Models\TwoFa;
 use Visanduma\NovaTwoFactor\TwoFaAuthenticator;
 
-class TwoFactorController extends Controller
+class TwoFactorController
 {
     public function registerUser()
     {
@@ -36,9 +35,9 @@ class TwoFactorController extends Controller
 
 
         $userTwoFa = new TwoFa();
-        $userTwoFa::where('user_id', auth()->user()->id)->delete();
+        $userTwoFa::where('user_id', auth()->id())->delete();
         $user2fa = new $userTwoFa();
-        $user2fa->user_id = auth()->user()->id;
+        $user2fa->user_id = auth()->id();
         $user2fa->google2fa_secret = $secretKey;
         $user2fa->recovery = $recoveryKeyHashed;
         $user2fa->save();
